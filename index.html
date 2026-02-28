@@ -5,74 +5,65 @@
 <title>plik.exe</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-    background: black;
-    color: white;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
+    background:black;
+    color:white;
+    font-family:Arial;
+    overflow:hidden;
 }
 
-/* Animowane tło */
+/* Tło */
 .background {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:repeating-linear-gradient(
         90deg,
-        rgba(255,0,0,0.1) 0px,
-        rgba(255,0,0,0.1) 2px,
+        rgba(255,0,0,0.15) 0px,
+        rgba(255,0,0,0.15) 2px,
         transparent 2px,
         transparent 40px
     );
-    animation: move 3s linear infinite;
-    z-index: -1;
+    animation:move 3s linear infinite;
+    z-index:-1;
 }
 
 @keyframes move {
-    from { background-position: 0 0; }
-    to { background-position: 200px 0; }
+    from { background-position:0 0; }
+    to { background-position:200px 0; }
 }
 
 .center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
 }
 
 /* Przycisk */
 button {
-    background: red;
-    color: white;
-    border: none;
-    padding: 30px 60px;
-    font-size: 30px;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0 0 20px red;
-    transition: 0.3s;
+    background:red;
+    color:white;
+    border:none;
+    padding:20px 40px;
+    font-size:22px;
+    cursor:pointer;
+    border-radius:8px;
+    box-shadow:0 0 15px red;
+    margin-top:20px;
 }
 
-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 40px red;
-}
-
-/* Fullscreen video */
+/* Video fullscreen */
 video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    object-fit:cover;
 }
 </style>
 </head>
@@ -86,35 +77,40 @@ video {
 </div>
 
 <script>
+
 function start() {
-    document.getElementById("main").innerHTML = "<h1>Ładowanie...</h1>";
+
+    document.getElementById("main").innerHTML = "Ładowanie...";
 
     setTimeout(() => {
-        document.getElementById("main").innerHTML = "<h1>Uruchamianie pliku...</h1>";
+
+        // Tworzymy video (start wyciszony)
+        const video = document.createElement("video");
+        video.id = "vid";
+        video.src = "Video.mp4"; // dopasuj nazwę jeśli masz inaczej
+        video.autoplay = true;
+        video.muted = true;
+        video.playsInline = true;
+
+        document.body.appendChild(video);
+
+        // Pokazujemy komunikat
+        document.getElementById("main").innerHTML = `
+            <h1>BŁĄD URUCHAMIANIA PLIKU</h1>
+            <button onclick="enableSound()">Więcej informacji...</button>
+        `;
+
     }, 3000);
-
-    setTimeout(() => {
-        playVideo();
-    }, 5000);
 }
 
-function playVideo() {
-    document.body.innerHTML = `
-        <video id="vid" autoplay muted playsinline>
-            <source src="Video.mp4" type="video/mp4">
-        </video>
-    `;
-
+function enableSound() {
     const video = document.getElementById("vid");
+    video.muted = false;
+    video.play();
 
-    video.play().then(() => {
-        setTimeout(() => {
-            video.muted = false;
-        }, 1000);
-    }).catch(err => {
-        console.log("Autoplay zablokowany:", err);
-    });
+    document.getElementById("main").innerHTML = "";
 }
+
 </script>
 
 </body>
