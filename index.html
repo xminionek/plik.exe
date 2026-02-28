@@ -5,66 +5,67 @@
 <title>plik.exe</title>
 
 <style>
-html, body {
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     background: black;
+    color: white;
+    font-family: Arial, sans-serif;
     overflow: hidden;
-    font-family: Consolas, monospace;
-    color: #00ff88;
 }
 
 /* Animowane tło */
-canvas {
+.background {
     position: fixed;
-    top: 0;
-    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255,0,0,0.1) 0px,
+        rgba(255,0,0,0.1) 2px,
+        transparent 2px,
+        transparent 40px
+    );
+    animation: move 3s linear infinite;
     z-index: -1;
 }
 
-.screen {
+@keyframes move {
+    from { background-position: 0 0; }
+    to { background-position: 200px 0; }
+}
+
+.center {
     position: absolute;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
 
-.hidden {
-    display: none;
-}
-
+/* Przycisk */
 button {
-    padding: 40px 80px;
-    font-size: 28px;
-    background: #111;
-    color: #00ff88;
-    border: 2px solid #00ff88;
+    background: red;
+    color: white;
+    border: none;
+    padding: 30px 60px;
+    font-size: 30px;
     cursor: pointer;
-    box-shadow: 0 0 20px #00ff88;
+    border-radius: 10px;
+    box-shadow: 0 0 20px red;
     transition: 0.3s;
 }
 
 button:hover {
-    background: #00ff88;
-    color: black;
+    transform: scale(1.1);
+    box-shadow: 0 0 40px red;
 }
 
-.progress-container {
-    width: 500px;
-    height: 22px;
-    border: 1px solid #00ff88;
-    margin-top: 20px;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    background: #00ff88;
-}
-
+/* Fullscreen video */
 video {
     position: fixed;
     top: 0;
@@ -78,103 +79,41 @@ video {
 
 <body>
 
-<canvas id="bg"></canvas>
+<div class="background"></div>
 
-<div id="start" class="screen">
-    <button onclick="startSequence()">
-        wchodzisz na własną odpowiedzialność
-    </button>
-</div>
-
-<div id="download" class="screen hidden">
-    <h3>Transfer pliku: 4234903.txt</h3>
-    <div class="progress-container">
-        <div class="progress-bar" id="bar"></div>
-    </div>
-    <p id="percent">0%</p>
+<div class="center" id="main">
+    <button onclick="start()">WCHODZISZ NA WŁASNĄ ODPOWIEDZIALNOŚĆ</button>
 </div>
 
 <script>
-// ===== Animowane tło =====
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function start() {
+    document.getElementById("main").innerHTML = "<h1>Ładowanie...</h1>";
 
-let particles = [];
-for (let i = 0; i < 80; i++) {
-    particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5),
-        vy: (Math.random() - 0.5)
-    });
-}
+    setTimeout(() => {
+        document.getElementById("main").innerHTML = "<h1>Uruchamianie pliku...</h1>";
+    }, 3000);
 
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.fillStyle = "#00ff88";
-        ctx.fillRect(p.x, p.y, 2, 2);
-
-        particles.forEach(p2 => {
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            if (dist < 120) {
-                ctx.strokeStyle = "rgba(0,255,136,0.1)";
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.stroke();
-            }
-        });
-    });
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-// ===== Sekwencja =====
-function startSequence() {
-    document.getElementById("start").classList.add("hidden");
-    document.getElementById("download").classList.remove("hidden");
-    startDownload();
-}
-
-function startDownload() {
-    let progress = 0;
-    const bar = document.getElementById("bar");
-    const percent = document.getElementById("percent");
-
-    const interval = setInterval(() => {
-        progress++;
-        bar.style.width = progress + "%";
-        percent.textContent = progress + "%";
-
-        if (progress >= 100) {
-            clearInterval(interval);
-
-            setTimeout(() => {
-                playVideo();
-            }, 5000);
-        }
-    }, 35);
+    setTimeout(() => {
+        playVideo();
+    }, 5000);
 }
 
 function playVideo() {
     document.body.innerHTML = `
-        <video autoplay>
-            <source src="video.mp4" type="video/mp4">
+        <video id="vid" autoplay muted playsinline>
+            <source src="Video.mp4" type="video/mp4">
         </video>
     `;
+
+    const video = document.getElementById("vid");
+
+    video.play().then(() => {
+        setTimeout(() => {
+            video.muted = false;
+        }, 1000);
+    }).catch(err => {
+        console.log("Autoplay zablokowany:", err);
+    });
 }
 </script>
 
