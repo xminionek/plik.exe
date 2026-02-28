@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>plik.exe</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: black;
+    font-family: Consolas, monospace;
+    color: #00ff88;
+}
+
+/* Tło animowane */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    padding: 40px 80px;
+    font-size: 28px;
+    background: #111;
+    color: #00ff88;
+    border: 2px solid #00ff88;
+    cursor: pointer;
+    box-shadow: 0 0 20px #00ff88;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00ff88;
+    color: black;
+}
+
+.progress-container {
+    width: 500px;
+    height: 22px;
+    border: 1px solid #00ff88;
+    margin-top: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #00ff88;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div id="start" class="screen">
+    <button onclick="startSequence()">
+        wchodzisz na własną odpowiedzialność
+    </button>
+</div>
+
+<div id="download" class="screen hidden">
+    <h3>Transfer pliku: 4234903.txt</h3>
+    <div class="progress-container">
+        <div class="progress-bar" id="bar"></div>
+    </div>
+    <p id="percent">0%</p>
+</div>
+
+<script>
+// ====== ANIMOWANE TŁO ======
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+for (let i = 0; i < 80; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 1,
+        vy: (Math.random() - 0.5) * 1
+    });
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.fillStyle = "#00ff88";
+        ctx.fillRect(p.x, p.y, 2, 2);
+
+        particles.forEach(p2 => {
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < 120) {
+                ctx.strokeStyle = "rgba(0,255,136,0.1)";
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+        });
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+// ====== SEKWENCJA ======
+function startSequence() {
+    document.getElementById("start").classList.add("hidden");
+    document.getElementById("download").classList.remove("hidden");
+    startDownload();
+}
+
+function startDownload() {
+    let progress = 0;
+    const bar = document.getElementById("bar");
+    const percent = document.getElementById("percent");
+
+    const interval = setInterval(() => {
+        progress++;
+        bar.style.width = progress + "%";
+        percent.textContent = progress + "%";
+        document.title = "4234903.txt - " + progress + "%";
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            document.title = "Transfer zakończony";
+
+            setTimeout(() => {
+                playVideo();
+            }, 5000);
+        }
+    }, 35);
+}
+
+function playVideo() {
+    document.body.innerHTML = `
+        <style>
+            html, body {
+                margin:0;
+                padding:0;
+                height:100%;
+                background:black;
+                overflow:hidden;
+            }
+            iframe {
+                position:fixed;
+                top:0;
+                left:0;
+                width:100vw;
+                height:100vh;
+                border:none;
+            }
+        </style>
+
+        <iframe
+            src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&playsinline=1"
+            allow="autoplay; fullscreen"
+            allowfullscreen>
+        </iframe>
+    `;
+}
+</script>
+
+</body>
+</html>
