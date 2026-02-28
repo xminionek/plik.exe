@@ -44,11 +44,10 @@ border-radius:10px;
 margin-top:20px;
 transition:0.3s;
 box-shadow:0 0 20px #00ff88;
-animation:pulse 2s infinite;
 }
 
 button:hover{
-transform:scale(1.15) rotate(1deg);
+transform:scale(1.15);
 box-shadow:
 0 0 30px #00ff88,
 0 0 60px #00ff88,
@@ -58,12 +57,6 @@ background:linear-gradient(45deg,#00ffaa,#00ffcc);
 
 button:active{
 transform:scale(0.9);
-}
-
-@keyframes pulse{
-0%{box-shadow:0 0 20px #00ff88;}
-50%{box-shadow:0 0 50px #00ff88;}
-100%{box-shadow:0 0 20px #00ff88;}
 }
 
 /* ===== PASEK POSTĘPU ===== */
@@ -80,6 +73,30 @@ overflow:hidden;
 height:100%;
 width:0%;
 background:#00ff88;
+}
+
+/* ===== FAŁSZYWY KOMUNIKAT ===== */
+.fakeError{
+color:#ccc;
+font-family:Arial, sans-serif;
+}
+
+.fakeError h1{
+color:#e0e0e0;
+font-weight:normal;
+font-size:28px;
+margin-bottom:20px;
+}
+
+.moreInfo{
+color:#999;
+margin-top:15px;
+cursor:pointer;
+font-size:16px;
+}
+
+.moreInfo:hover{
+text-decoration:underline;
 }
 
 /* ===== VIDEO ===== */
@@ -181,17 +198,19 @@ main.innerHTML="<h1>Pobieranie zakończone</h1>";
 },500);
 
 setTimeout(()=>{
-showError();
+showFakeError();
 },2000);
 }
 },35);
 }
 
-function showError(){
+function showFakeError(){
 let main=document.getElementById("main");
 main.innerHTML=`
-<h1>BŁĄD URUCHAMIANIA PLIKU</h1>
-<button onclick="enableVideo()">Więcej informacji...</button>
+<div class="fakeError">
+<h1>Nie można załadować strony</h1>
+<div class="moreInfo" onclick="enableVideo()">więcej informacji...</div>
+</div>
 `;
 }
 
