@@ -14,7 +14,7 @@ font-family:Consolas, monospace;
 overflow:hidden;
 }
 
-/* ====== TŁO Z LINIAMI ====== */
+/* ===== TŁO ===== */
 canvas{
 position:fixed;
 top:0;
@@ -22,7 +22,7 @@ left:0;
 z-index:-1;
 }
 
-/* ====== CENTROWANIE ====== */
+/* ===== CENTROWANIE ===== */
 .center{
 position:absolute;
 top:50%;
@@ -32,47 +32,44 @@ text-align:center;
 width:80%;
 }
 
-/* ====== PRZYCISK ====== */
+/* ===== PRZYCISK ===== */
 button{
-background:#00ff88;
+background: linear-gradient(45deg,#00ff88,#00ffaa);
 color:black;
 border:none;
-padding:20px 40px;
-font-size:22px;
+padding:25px 60px;
+font-size:26px;
 cursor:pointer;
-border-radius:6px;
+border-radius:10px;
 margin-top:20px;
-transition:all 0.3s ease;
-box-shadow:0 0 10px #00ff88;
+transition:0.3s;
+box-shadow:0 0 20px #00ff88;
 animation:pulse 2s infinite;
 }
 
-/* Hover */
 button:hover{
-background:#00ffaa;
-transform:scale(1.1);
+transform:scale(1.15) rotate(1deg);
 box-shadow:
-0 0 20px #00ff88,
-0 0 40px #00ff88,
-0 0 60px #00ff88;
+0 0 30px #00ff88,
+0 0 60px #00ff88,
+0 0 100px #00ff88;
+background:linear-gradient(45deg,#00ffaa,#00ffcc);
 }
 
-/* Klik */
 button:active{
-transform:scale(0.95);
+transform:scale(0.9);
 }
 
-/* Pulsowanie */
 @keyframes pulse{
-0%{box-shadow:0 0 10px #00ff88;}
-50%{box-shadow:0 0 30px #00ff88;}
-100%{box-shadow:0 0 10px #00ff88;}
+0%{box-shadow:0 0 20px #00ff88;}
+50%{box-shadow:0 0 50px #00ff88;}
+100%{box-shadow:0 0 20px #00ff88;}
 }
 
-/* Pasek postępu */
+/* ===== PASEK POSTĘPU ===== */
 .progress{
 width:100%;
-height:20px;
+height:25px;
 background:#003322;
 margin-top:20px;
 border-radius:5px;
@@ -85,7 +82,7 @@ width:0%;
 background:#00ff88;
 }
 
-/* Video */
+/* ===== VIDEO ===== */
 video{
 position:fixed;
 top:0;
@@ -94,6 +91,7 @@ width:100vw;
 height:100vh;
 object-fit:cover;
 display:none;
+background:black;
 }
 </style>
 </head>
@@ -110,7 +108,7 @@ display:none;
 </video>
 
 <script>
-/* ====== ANIMOWANE TŁO ====== */
+/* ===== ANIMOWANE TŁO ===== */
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
@@ -157,7 +155,7 @@ requestAnimationFrame(animate);
 }
 animate();
 
-/* ====== LOGIKA ====== */
+/* ===== LOGIKA ===== */
 function start(){
 let main=document.getElementById("main");
 main.innerHTML=`
@@ -186,18 +184,18 @@ setTimeout(()=>{
 showError();
 },2000);
 }
-},40);
+},35);
 }
 
 function showError(){
 let main=document.getElementById("main");
 main.innerHTML=`
 <h1>BŁĄD URUCHAMIANIA PLIKU</h1>
-<button onclick="enableSound()">Więcej informacji...</button>
+<button onclick="enableVideo()">Więcej informacji...</button>
 `;
 }
 
-function enableSound(){
+function enableVideo(){
 let video=document.getElementById("vid");
 video.style.display="block";
 video.muted=false;
