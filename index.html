@@ -75,28 +75,46 @@ width:0%;
 background:#00ff88;
 }
 
-/* ===== FAŁSZYWY KOMUNIKAT ===== */
-.fakeError{
-color:#ccc;
+/* ===== FAKE CHROME ERROR ===== */
+.chromeError{
+position:fixed;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
+background:#f2f2f2;
+color:#333;
 font-family:Arial, sans-serif;
+padding:60px;
+display:none;
 }
 
-.fakeError h1{
-color:#e0e0e0;
-font-weight:normal;
+.chromeError h1{
 font-size:28px;
+font-weight:normal;
 margin-bottom:20px;
 }
 
-.moreInfo{
-color:#999;
-margin-top:15px;
-cursor:pointer;
-font-size:16px;
+.chromeError p{
+margin:8px 0;
 }
 
-.moreInfo:hover{
-text-decoration:underline;
+.chromeError ul{
+margin:15px 0 15px 20px;
+}
+
+.refreshBtn{
+background:#1a73e8;
+color:white;
+border:none;
+padding:10px 22px;
+border-radius:4px;
+cursor:pointer;
+margin-top:20px;
+}
+
+.refreshBtn:hover{
+background:#1669c1;
 }
 
 /* ===== VIDEO ===== */
@@ -118,6 +136,22 @@ background:black;
 
 <div class="center" id="main">
 <button onclick="start()">WCHODZISZ NA WŁASNĄ ODPOWIEDZIALNOŚĆ</button>
+</div>
+
+<div class="chromeError" id="errorScreen">
+<h1>Ta witryna jest nieosiągalna</h1>
+<p>Serwer <strong>example-site.local</strong> potrzebował zbyt wiele czasu na odpowiedź.</p>
+
+<p>Wypróbuj te rozwiązania:</p>
+<ul>
+<li>Odśwież stronę</li>
+<li>Sprawdź połączenie</li>
+<li>Sprawdź ustawienia zapory sieciowej</li>
+</ul>
+
+<p style="color:#777;margin-top:20px;">ERR_TIMED_OUT</p>
+
+<button class="refreshBtn" onclick="enableVideo()">Odśwież</button>
 </div>
 
 <video id="vid" preload="auto" playsinline>
@@ -198,28 +232,20 @@ main.innerHTML="<h1>Pobieranie zakończone</h1>";
 },500);
 
 setTimeout(()=>{
-showFakeError();
+document.getElementById("main").style.display="none";
+document.getElementById("bg").style.display="none";
+document.getElementById("errorScreen").style.display="block";
 },2000);
 }
 },35);
 }
 
-function showFakeError(){
-let main=document.getElementById("main");
-main.innerHTML=`
-<div class="fakeError">
-<h1>Nie można załadować strony</h1>
-<div class="moreInfo" onclick="enableVideo()">więcej informacji...</div>
-</div>
-`;
-}
-
 function enableVideo(){
+document.getElementById("errorScreen").style.display="none";
 let video=document.getElementById("vid");
 video.style.display="block";
 video.muted=false;
 video.play();
-document.getElementById("main").innerHTML="";
 }
 </script>
 
