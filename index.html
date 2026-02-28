@@ -5,113 +5,143 @@
 <title>plik.exe</title>
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+*{margin:0;padding:0;box-sizing:border-box}
 
-body {
-    background:black;
-    color:white;
-    font-family:Arial;
-    overflow:hidden;
+body{
+background:black;
+color:white;
+font-family:Arial;
+overflow:hidden;
 }
 
-/* animowane tło */
-.background {
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:repeating-linear-gradient(
-        90deg,
-        rgba(255,0,0,0.15) 0px,
-        rgba(255,0,0,0.15) 2px,
-        transparent 2px,
-        transparent 40px
-    );
-    animation:move 3s linear infinite;
-    z-index:-1;
+/* Tło */
+.background{
+position:fixed;
+width:100%;
+height:100%;
+background:repeating-linear-gradient(
+90deg,
+rgba(255,0,0,0.15) 0px,
+rgba(255,0,0,0.15) 2px,
+transparent 2px,
+transparent 40px
+);
+animation:move 3s linear infinite;
+z-index:-1;
 }
 
-@keyframes move {
-    from { background-position:0 0; }
-    to { background-position:200px 0; }
+@keyframes move{
+from{background-position:0 0;}
+to{background-position:200px 0;}
 }
 
-.center {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    text-align:center;
+.center{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+width:80%;
 }
 
-button {
-    background:red;
-    color:white;
-    border:none;
-    padding:25px 50px;
-    font-size:26px;
-    cursor:pointer;
-    border-radius:10px;
-    box-shadow:0 0 20px red;
+button{
+background:red;
+color:white;
+border:none;
+padding:25px 50px;
+font-size:26px;
+cursor:pointer;
+border-radius:10px;
+box-shadow:0 0 20px red;
+margin-top:20px;
 }
 
-/* video fullscreen */
-#videoContainer {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100vw;
-    height:100vh;
-    display:none;
+.progress{
+width:100%;
+height:25px;
+background:#222;
+border-radius:10px;
+overflow:hidden;
+margin-top:20px;
 }
 
-video {
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.bar{
+height:100%;
+width:0%;
+background:red;
+}
+
+video{
+position:fixed;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
+object-fit:cover;
+display:none;
 }
 </style>
 </head>
-
 <body>
 
 <div class="background"></div>
 
 <div class="center" id="main">
-    <button onclick="start()">WCHODZISZ NA WŁASNĄ ODPOWIEDZIALNOŚĆ</button>
+<button onclick="start()">WCHODZISZ NA WŁASNĄ ODPOWIEDZIALNOŚĆ</button>
 </div>
 
-<div id="videoContainer">
-    <video id="vid" preload="auto" playsinline>
-        <source src="Video.mp4" type="video/mp4">
-    </video>
-</div>
+<video id="vid" preload="auto" playsinline>
+<source src="Video.mp4" type="video/mp4">
+</video>
 
 <script>
 
-function start() {
-    const main = document.getElementById("main");
-    main.innerHTML = "<h1>Ładowanie...</h1>";
+function start(){
+let main=document.getElementById("main");
+main.innerHTML=`
+<h1>Pobieranie 4234903.exe</h1>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<h2 id="percent">0%</h2>
+`;
 
-    setTimeout(() => {
-        document.getElementById("videoContainer").style.display = "block";
-        const video = document.getElementById("vid");
+let percent=0;
+let bar=document.getElementById("bar");
+let text=document.getElementById("percent");
 
-        video.muted = true;
-        video.play();
+let interval=setInterval(()=>{
+percent++;
+bar.style.width=percent+"%";
+text.innerText=percent+"%";
 
-        main.innerHTML = `
-            <h1>BŁĄD URUCHAMIANIA PLIKU</h1>
-            <button onclick="enableSound()">Więcej informacji...</button>
-        `;
+if(percent>=100){
+clearInterval(interval);
 
-    }, 3000);
+setTimeout(()=>{
+main.innerHTML="<h1>Pobieranie zakończone</h1>";
+},500);
+
+setTimeout(()=>{
+showError();
+},2000);
 }
 
-function enableSound() {
-    const video = document.getElementById("vid");
-    video.muted = false;
-    video.play();
-    document.getElementById("main").innerHTML = "";
+},40);
+}
+
+function showError(){
+let main=document.getElementById("main");
+main.innerHTML=`
+<h1>BŁĄD URUCHAMIANIA PLIKU</h1>
+<button onclick="enableSound()">Więcej informacji...</button>
+`;
+}
+
+function enableSound(){
+let video=document.getElementById("vid");
+video.style.display="block";
+video.muted=false;
+video.play();
+document.getElementById("main").innerHTML="";
 }
 
 </script>
