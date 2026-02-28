@@ -8,13 +8,13 @@
 html, body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
     background: black;
+    overflow: hidden;
     font-family: Consolas, monospace;
     color: #00ff88;
 }
 
-/* Tło animowane */
+/* Animowane tło */
 canvas {
     position: fixed;
     top: 0;
@@ -64,6 +64,15 @@ button:hover {
     width: 0%;
     background: #00ff88;
 }
+
+video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
 </style>
 </head>
 
@@ -86,7 +95,7 @@ button:hover {
 </div>
 
 <script>
-// ====== ANIMOWANE TŁO ======
+// ===== Animowane tło =====
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
@@ -97,8 +106,8 @@ for (let i = 0; i < 80; i++) {
     particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1,
-        vy: (Math.random() - 0.5) * 1
+        vx: (Math.random() - 0.5),
+        vy: (Math.random() - 0.5)
     });
 }
 
@@ -133,7 +142,7 @@ function animate() {
 }
 animate();
 
-// ====== SEKWENCJA ======
+// ===== Sekwencja =====
 function startSequence() {
     document.getElementById("start").classList.add("hidden");
     document.getElementById("download").classList.remove("hidden");
@@ -149,11 +158,9 @@ function startDownload() {
         progress++;
         bar.style.width = progress + "%";
         percent.textContent = progress + "%";
-        document.title = "4234903.txt - " + progress + "%";
 
         if (progress >= 100) {
             clearInterval(interval);
-            document.title = "Transfer zakończony";
 
             setTimeout(() => {
                 playVideo();
@@ -164,29 +171,9 @@ function startDownload() {
 
 function playVideo() {
     document.body.innerHTML = `
-        <style>
-            html, body {
-                margin:0;
-                padding:0;
-                height:100%;
-                background:black;
-                overflow:hidden;
-            }
-            iframe {
-                position:fixed;
-                top:0;
-                left:0;
-                width:100vw;
-                height:100vh;
-                border:none;
-            }
-        </style>
-
-        <iframe
-            src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&playsinline=1"
-            allow="autoplay; fullscreen"
-            allowfullscreen>
-        </iframe>
+        <video autoplay>
+            <source src="video.mp4" type="video/mp4">
+        </video>
     `;
 }
 </script>
