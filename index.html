@@ -14,7 +14,7 @@ font-family:Consolas, monospace;
 overflow:hidden;
 }
 
-/* Zielone linie */
+/* ====== TŁO Z LINIAMI ====== */
 canvas{
 position:fixed;
 top:0;
@@ -22,6 +22,7 @@ left:0;
 z-index:-1;
 }
 
+/* ====== CENTROWANIE ====== */
 .center{
 position:absolute;
 top:50%;
@@ -31,6 +32,7 @@ text-align:center;
 width:80%;
 }
 
+/* ====== PRZYCISK ====== */
 button{
 background:#00ff88;
 color:black;
@@ -40,13 +42,41 @@ font-size:22px;
 cursor:pointer;
 border-radius:6px;
 margin-top:20px;
+transition:all 0.3s ease;
+box-shadow:0 0 10px #00ff88;
+animation:pulse 2s infinite;
 }
 
+/* Hover */
+button:hover{
+background:#00ffaa;
+transform:scale(1.1);
+box-shadow:
+0 0 20px #00ff88,
+0 0 40px #00ff88,
+0 0 60px #00ff88;
+}
+
+/* Klik */
+button:active{
+transform:scale(0.95);
+}
+
+/* Pulsowanie */
+@keyframes pulse{
+0%{box-shadow:0 0 10px #00ff88;}
+50%{box-shadow:0 0 30px #00ff88;}
+100%{box-shadow:0 0 10px #00ff88;}
+}
+
+/* Pasek postępu */
 .progress{
 width:100%;
 height:20px;
 background:#003322;
 margin-top:20px;
+border-radius:5px;
+overflow:hidden;
 }
 
 .bar{
@@ -55,6 +85,7 @@ width:0%;
 background:#00ff88;
 }
 
+/* Video */
 video{
 position:fixed;
 top:0;
@@ -79,7 +110,7 @@ display:none;
 </video>
 
 <script>
-// ======= Zielone linie w tle =======
+/* ====== ANIMOWANE TŁO ====== */
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
@@ -126,7 +157,7 @@ requestAnimationFrame(animate);
 }
 animate();
 
-// ======= Logika strony =======
+/* ====== LOGIKA ====== */
 function start(){
 let main=document.getElementById("main");
 main.innerHTML=`
