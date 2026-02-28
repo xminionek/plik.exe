@@ -14,7 +14,7 @@ font-family:Consolas, monospace;
 overflow:hidden;
 }
 
-/* ===== TŁO ===== */
+/* ===== TŁO ANIMOWANE ===== */
 canvas{
 position:fixed;
 top:0;
@@ -32,7 +32,7 @@ text-align:center;
 width:80%;
 }
 
-/* ===== PRZYCISK ===== */
+/* ===== PRZYCISK START ===== */
 button{
 background: linear-gradient(45deg,#00ff88,#00ffaa);
 color:black;
@@ -41,7 +41,6 @@ padding:25px 60px;
 font-size:26px;
 cursor:pointer;
 border-radius:10px;
-margin-top:20px;
 transition:0.3s;
 box-shadow:0 0 20px #00ff88;
 }
@@ -52,11 +51,6 @@ box-shadow:
 0 0 30px #00ff88,
 0 0 60px #00ff88,
 0 0 100px #00ff88;
-background:linear-gradient(45deg,#00ffaa,#00ffcc);
-}
-
-button:active{
-transform:scale(0.9);
 }
 
 /* ===== PASEK POSTĘPU ===== */
@@ -75,7 +69,7 @@ width:0%;
 background:#00ff88;
 }
 
-/* ===== FAKE CHROME ERROR ===== */
+/* ===== REALISTYCZNY EKRAN CHROME ===== */
 .chromeError{
 position:fixed;
 top:0;
@@ -83,38 +77,65 @@ left:0;
 width:100vw;
 height:100vh;
 background:#f2f2f2;
-color:#333;
 font-family:Arial, sans-serif;
-padding:60px;
+color:#202124;
 display:none;
+padding:80px 120px;
 }
 
-.chromeError h1{
+.chromeContainer{
+max-width:700px;
+}
+
+.chromeIcon{
+font-size:50px;
+margin-bottom:20px;
+color:#9aa0a6;
+}
+
+.chromeTitle{
 font-size:28px;
 font-weight:normal;
-margin-bottom:20px;
+margin-bottom:15px;
 }
 
-.chromeError p{
-margin:8px 0;
+.chromeText{
+color:#5f6368;
+margin-bottom:10px;
 }
 
-.chromeError ul{
+.chromeList{
 margin:15px 0 15px 20px;
+color:#5f6368;
+}
+
+.chromeCode{
+margin-top:25px;
+color:#9aa0a6;
+font-size:14px;
 }
 
 .refreshBtn{
+margin-top:25px;
 background:#1a73e8;
 color:white;
 border:none;
-padding:10px 22px;
+padding:10px 24px;
 border-radius:4px;
 cursor:pointer;
-margin-top:20px;
+font-size:14px;
+transition:0.2s;
 }
 
+/* Hover */
 .refreshBtn:hover{
 background:#1669c1;
+}
+
+/* Efekt świecenia jak w Chrome (focus) */
+.refreshBtn:focus{
+outline:none;
+box-shadow:0 0 0 3px rgba(26,115,232,0.4);
 }
 
 /* ===== VIDEO ===== */
@@ -139,19 +160,26 @@ background:black;
 </div>
 
 <div class="chromeError" id="errorScreen">
-<h1>Ta witryna jest nieosiągalna</h1>
-<p>Serwer <strong>example-site.local</strong> potrzebował zbyt wiele czasu na odpowiedź.</p>
+<div class="chromeContainer">
+<div class="chromeIcon">📄</div>
+<div class="chromeTitle">Ta witryna jest nieosiągalna</div>
+<div class="chromeText">
+Serwer <strong>example-site.local</strong> potrzebował zbyt wiele czasu na odpowiedź.
+</div>
 
-<p>Wypróbuj te rozwiązania:</p>
-<ul>
+<div class="chromeText">Wypróbuj te rozwiązania:</div>
+<ul class="chromeList">
 <li>Odśwież stronę</li>
 <li>Sprawdź połączenie</li>
-<li>Sprawdź ustawienia zapory sieciowej</li>
+<li>Sprawdź serwer proxy i zaporę sieciową</li>
 </ul>
 
-<p style="color:#777;margin-top:20px;">ERR_TIMED_OUT</p>
+<div class="chromeCode">ERR_TIMED_OUT</div>
 
-<button class="refreshBtn" onclick="enableVideo()">Odśwież</button>
+<button class="refreshBtn" onclick="enableVideo()" autofocus>
+Odśwież
+</button>
+</div>
 </div>
 
 <video id="vid" preload="auto" playsinline>
