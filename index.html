@@ -135,7 +135,7 @@ background:#1669c1;
 /* Efekt świecenia jak w Chrome (focus) */
 .refreshBtn:focus{
 outline:none;
-box-shadow:0 0 0 3px rgba(26,115,232,0.4);
+box-shadow:none;
 }
 
 /* ===== VIDEO ===== */
@@ -176,7 +176,7 @@ Serwer <strong>example-site.local</strong> potrzebował zbyt wiele czasu na odpo
 
 <div class="chromeCode">ERR_TIMED_OUT</div>
 
-<button class="refreshBtn" onclick="enableVideo()" autofocus>
+<button class="refreshBtn" onclick="enableVideo()">
 Odśwież
 </button>
 </div>
@@ -279,3 +279,4 @@ video.play();
 
 </body>
 </html>
+
