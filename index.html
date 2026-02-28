@@ -14,7 +14,7 @@ body {
     overflow:hidden;
 }
 
-/* Tło */
+/* animowane tło */
 .background {
     position:fixed;
     width:100%;
@@ -43,26 +43,30 @@ body {
     text-align:center;
 }
 
-/* Przycisk */
 button {
     background:red;
     color:white;
     border:none;
-    padding:20px 40px;
-    font-size:22px;
+    padding:25px 50px;
+    font-size:26px;
     cursor:pointer;
-    border-radius:8px;
-    box-shadow:0 0 15px red;
-    margin-top:20px;
+    border-radius:10px;
+    box-shadow:0 0 20px red;
 }
 
-/* Video fullscreen */
-video {
+/* video fullscreen */
+#videoContainer {
     position:fixed;
     top:0;
     left:0;
     width:100vw;
     height:100vh;
+    display:none;
+}
+
+video {
+    width:100%;
+    height:100%;
     object-fit:cover;
 }
 </style>
@@ -76,26 +80,26 @@ video {
     <button onclick="start()">WCHODZISZ NA WŁASNĄ ODPOWIEDZIALNOŚĆ</button>
 </div>
 
+<div id="videoContainer">
+    <video id="vid" preload="auto" playsinline>
+        <source src="Video.mp4" type="video/mp4">
+    </video>
+</div>
+
 <script>
 
 function start() {
-
-    document.getElementById("main").innerHTML = "Ładowanie...";
+    const main = document.getElementById("main");
+    main.innerHTML = "<h1>Ładowanie...</h1>";
 
     setTimeout(() => {
+        document.getElementById("videoContainer").style.display = "block";
+        const video = document.getElementById("vid");
 
-        // Tworzymy video (start wyciszony)
-        const video = document.createElement("video");
-        video.id = "vid";
-        video.src = "Video.mp4"; // dopasuj nazwę jeśli masz inaczej
-        video.autoplay = true;
         video.muted = true;
-        video.playsInline = true;
+        video.play();
 
-        document.body.appendChild(video);
-
-        // Pokazujemy komunikat
-        document.getElementById("main").innerHTML = `
+        main.innerHTML = `
             <h1>BŁĄD URUCHAMIANIA PLIKU</h1>
             <button onclick="enableSound()">Więcej informacji...</button>
         `;
@@ -107,7 +111,6 @@ function enableSound() {
     const video = document.getElementById("vid");
     video.muted = false;
     video.play();
-
     document.getElementById("main").innerHTML = "";
 }
 
